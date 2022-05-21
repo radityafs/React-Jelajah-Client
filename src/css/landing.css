@@ -3,10 +3,8 @@
     margin: 0;
     font-family: 'Poppins', sans-serif;
 }
-#root{
-    width: 100%;
-    height: 100vh;
-}
+
+
 html, body{
     height: 100%;
     max-width: 100vw;
@@ -504,10 +502,6 @@ footer .container-md .location{
     margin-bottom: 10px;
 }
 
-.section-top{
-    height: 80;
-}
-
 footer .download .store{
     display: flex;
     flex-direction: column
@@ -552,7 +546,7 @@ footer .social-media .media{
 
     .discover-section{
         height: 100vh;
-        padding-top: 100px;
+        padding-top: 200px;
     }
 
     .bottom-hero img{
@@ -575,7 +569,7 @@ footer .social-media .media{
     .box-search{
         margin-top: 50px;
         position: absolute;
-        top: 300px;
+        top: 225px;
         z-index: 100;
         display: auto;
         margin-right: auto;
@@ -598,7 +592,7 @@ footer .social-media .media{
 
     .overlay{
         position:absolute;
-        top: 700px;
+        top: 625px;
         right: 0;
         z-index: 5;
     }
@@ -665,6 +659,11 @@ footer .social-media .media{
     footer .container-md{
         width: 100%;
         justify-content: space-around;
+    }
+
+
+    .section-top{
+        padding-top: 200px;
     }
 
 
@@ -801,6 +800,13 @@ footer .social-media .media{
         height: 100px;
     }
 
+    .discover-section{
+        padding-top: 0px;
+    }
+
+    .section-top{
+        padding-top: 0px;
+    }
 
 
   }
