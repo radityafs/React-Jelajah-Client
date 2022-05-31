@@ -3,7 +3,7 @@ import illustration from '../assets/illustration.svg';
 import Logo from '../assets/logo.svg';
 import '../css/RegisterPage.css';
 
-export default function ForgotPassword() {
+export default function ForgotPages() {
   return (
     <div className='container-full row'>
       <div className='side-image col-lg-7 col-sm-0'>

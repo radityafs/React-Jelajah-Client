@@ -1,51 +1,161 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Logo from '../assets/logo.svg';
 import Search from '../assets/search.svg';
-
+import Bali from '../assets/card1.png';
+import Swal from 'sweetalert2';
+import axios from 'axios';
 export default function Header() {
+  const [isLogged, SetisLogged] = useState(false);
+  const [userProfile, SetuserProfile] = useState('');
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      SetisLogged(true);
+
+      try {
+        const data = JSON.parse(localStorage.getItem('data'));
+        if (data?.photo != undefined) {
+          axios
+            .get(
+              `${process.env.REACT_APP_BACKEND_API_URL}/public/${data?.photo}`
+            )
+            .then((res) => {
+              SetuserProfile(res.data);
+            });
+        } else {
+          SetuserProfile(Bali);
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong',
+          confirmButtonColor: '#3085d6',
+          timer: 2000
+        });
+      }
+    } else {
+      SetisLogged(false);
+    }
+  }, []);
+
   return (
-    <nav className='navbar navbar-expand-md nav-wrapper sticky-top'>
-    <div className='container-md' style={{ width: '100vw' }}>
-      <a className='navbar-brand' href='/#'>
-        <img
-          src={Logo}
-          style={{ width: '50px', height: '34px' }}
-          alt='logo'
-        />
-      </a>
-      <button
-        className='navbar-toggler'
-        type='button'
-        data-bs-toggle='collapse'
-        data-bs-target='#collapsibleNavbar'
-      >
-        <span className='fa fa-navicon'></span>
-      </button>
-      <div
-        className='collapse navbar-collapse justify-content-end'
-        id='collapsibleNavbar'
-      >
-        <ul className='navbar-nav'>
-          <li>
-            <div className='search'>
-              <img src={Search} alt='search' />
-              <input type='text' placeholder='Where you want to go?' />
-            </div>
-          </li>
-          <li>
-            <a href='index.html'>Find Ticket</a>
-          </li>
-          <li>
-            <a href='about.html'>My Bookings</a>
-          </li>
-          <li>
-            <a className='btn-nav' href='/signup'>
-              Sign Up
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-  )
+    <>
+      <nav className='navbar nav-wrapper navbar-expand-lg navbar-light bg-light bg-white py-40'>
+        <div className='container-md'>
+          <Link className='navbar-brand' to='/'>
+            <img src={Logo} alt='dssds' />
+          </Link>
+          <button
+            className='navbar-toggler'
+            type='button'
+            data-bs-toggle='collapse'
+            data-bs-target='#navbarNav'
+            aria-controls='navbarNav'
+            aria-expanded='false'
+            aria-label='Toggle navigation'
+          >
+            <span className='navbar-toggler-icon'></span>
+          </button>
+          <div className='collapse navbar-collapse' id='navbarNav'>
+            <ul className='navbar-nav ms-auto text-lg gap-lg-0 gap-2'>
+              <li className='nav-item my-auto'>
+                <div className='search'>
+                  <img src={Search} alt='search' />
+                  <input type='text' placeholder='Where you want to go?' />
+                </div>
+              </li>
+
+              <li className='nav-item my-auto me-lg-20'>
+                <Link className='nav-link' to='/explore'>
+                  Find Ticket
+                </Link>
+              </li>
+              <li className='nav-item my-auto me-lg-20'>
+                <Link className='nav-link' to='/mybooking'>
+                  My Bookings
+                </Link>
+              </li>
+              {!isLogged ? (
+                <li>
+                  <Link className='btn-nav' to='/signup'>
+                    Sign Up
+                  </Link>
+                </li>
+              ) : (
+                <li className='nav-item my-auto dropdown d-flex'>
+                  <div className='vertical-line d-lg-block d-none'></div>
+                  <div>
+                    <a
+                      className='dropdown-toggle ms-lg-40'
+                      href='#'
+                      role='button'
+                      id='dropdownMenuLink'
+                      data-bs-toggle='dropdown'
+                      aria-expanded='false'
+                    >
+                      <img
+                        src={userProfile}
+                        className='rounded-circle'
+                        width='40'
+                        height='40'
+                        alt=''
+                      />
+                    </a>
+
+                    <ul
+                      className='dropdown-menu border-0'
+                      aria-labelledby='dropdownMenuLink'
+                    >
+                      <li>
+                        <a
+                          className='dropdown-item text-lg color-palette-2'
+                          href='#'
+                        >
+                          My Profile
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          className='dropdown-item text-lg color-palette-2'
+                          href='#'
+                        >
+                          Wallet
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          className='dropdown-item text-lg color-palette-2'
+                          href='#'
+                        >
+                          Account Settings
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          className='dropdown-item text-lg color-palette-2'
+                          href='#'
+                          onClick={() => {
+                            console.log('logout');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('data');
+                            SetisLogged(false);
+                          }}
+                        >
+                          Log Out
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              )}
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </>
+  );
 }

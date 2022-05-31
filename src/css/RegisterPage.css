@@ -117,14 +117,19 @@
 }
 
 
+
 @media only screen and (max-width: 768px) {
 
     .container-full .side-image{
         display: none;
     }
-    .row>*{
+    .container-full + .row>*{
         padding-right: 0;
         position: absolute;
+        width: 100vw;
+    }
+
+    .container-full .col-lg-5 .container-md{
         width: 100vw;
     }
 }

@@ -1,0 +1,74 @@
+
+
+.section-bookingpass{
+    padding-top: 70px;
+    height: 90vh;
+    background-color: #2395FF;
+    display: flex;
+    justify-content: center;
+}
+
+
+.section-bookingpass .container-md{
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.section-bookingpass .e-ticket{
+    height: 80%;
+    margin-top: 30px;
+    border: 2px solid #E5E5E5;
+    border-radius: 10px;
+}
+
+.section-bookingpass .e-ticket .col-lg-8{
+    border-right: 1px solid #E5E5E5;
+}
+
+
+.section-bookingpass .box-booking-pass{
+    width: 70%;
+    height: 80%;
+    padding: 30px;
+    border-radius: 25px;
+    background-color: #FFF;
+}
+
+
+
+
+@media only screen and (max-width: 768px) {
+
+    .section-bookingpass{
+        height: 800px;
+    }
+    .section-bookingpass .container-md{
+        height: 700px;
+
+    }
+
+    .section-bookingpass .box-booking-pass{
+        height: 650px;
+    }
+
+    .section-bookingpass .e-ticket .col-lg-8{
+        border-right: 0;
+    }
+
+    .qr-code img{
+        width: 150px;
+        height: 150px;
+    }
+
+
+    .section-bookingpass .e-ticket{
+        height: 90%;
+    }
+
+
+
+
+}

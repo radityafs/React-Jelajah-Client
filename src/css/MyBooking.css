@@ -1,0 +1,266 @@
+.mybooking-section{
+      width:100%;
+      height:850px;
+      background-color: #F5F6FA;
+      padding-top: 80px;
+}
+
+.sidebar{
+    display: flex;
+    justify-content: space-around;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 100%;
+    background-color: #fff;
+    height: 700px;
+    border-radius: 25px;
+}
+
+.sidebar .user-photo{
+    width: 100%;
+    padding-top: 30px;
+}
+
+.sidebar .user-photo .photo{
+    width: 137px;
+    height: 137px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    padding: 5px;
+    border: 2px solid #2395FF;
+}
+
+.sidebar .user-name{
+    width: 100%;
+    padding:30px;
+    text-align: center;
+}
+
+.sidebar .upload-file{
+    width:100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.sidebar .upload-file input{
+    display: none
+}
+
+.sidebar .upload-file label{
+    border-radius:10px;
+    font-size:16px;
+    font-weight:bold;
+    color:#2395FF;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:125px;
+    height:50px;
+    border:2px solid #2395FF;
+}
+
+.sidebar .navigation-sidebar ul{
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.sidebar .navigation-sidebar .list{
+    margin-bottom: 25px;
+    font-weight: 500;
+
+}
+
+.sidebar .navigation-sidebar .list img{
+    width: 25px;
+    height: 25px;
+    margin-right: 20px;   
+}
+
+
+.mybooking-section .box-profile{
+    height: 700px;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 25px;
+    padding: 30px;
+}
+
+.mybooking-section .box-profile button{
+    width: 125px;
+    height: 50px;
+    border-radius: 5px;
+    background-color: #2395FF;
+    border: 0;
+    color: #FFF;
+    font-weight: 600;
+    width: '125px',
+}
+
+
+.mybooking-section .box-profile .space-end{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 25px;
+}
+
+
+.mybooking-section .box-profile button:hover{
+    background-color: #168fff;
+}
+
+.mybooking-section .top-banner{
+    border-radius:10px;
+    height:100px;
+    background-color: #fff;
+    width: 100%;
+    padding:20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top:20px;
+}
+
+.mybooking-section .title-booking p{
+    color:#2395FF;
+    font-size:16px;
+    letter-spacing:2px;
+    font-weight:600;
+    margin-bottom:5px;
+}
+
+.mybooking-section .title-booking h3{
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.mybooking-section .subtitle-booking{
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+}
+
+.mybooking-section .subtitle-booking p{
+    margin-bottom: 0;
+    height: 20px;
+    color: #2395FF;
+}
+
+.mybooking-section .order-booking-list{
+
+    height: 575px;
+    margin-top:30px;
+    overflow: auto;
+    margin-bottom: 100px;
+}
+
+
+.mybooking-section .box-profile input{
+    border: 0;
+    padding: 10px;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #9896AB;
+    margin-bottom: 20px;
+}
+
+.mybooking-section .box-profile label{
+    padding-left:10px;
+    color: #9896AB;
+}
+
+.mybooking-section input:focus{
+    outline: none;
+}
+
+
+.mybooking-section .order-booking-list .order-booking{
+    width:100%;
+    height:225px;
+    background-color:#FFF;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 25px;
+}
+
+
+.mybooking-section .order-booking-list .order-booking h2{
+    font-size: 24px;
+}
+
+.mybooking-section .order-booking .order-booking hr{
+    margin: 0;
+    margin-top: 25px;
+    margin-bottom: 5px;
+}
+
+.order-booking .status-box{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    height: 75px;
+    justify-content: space-between;
+}
+
+
+.order-booking .status-order{
+    width: 250px;
+    height: 40px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    color: #FFF;
+    font-weight: 500;
+    padding: 10px;
+}
+
+.order-booking .status-order.pending{
+    background-color: #FF7F23;
+}
+
+.order-booking .status-order.succeed{
+    background-color: #4FCF4D;
+}
+
+.order-booking .status-order.canceled{
+    background-color: #ff2323;
+}
+
+
+.order-booking .status-box p{
+    margin-bottom: 0;
+    margin-right: 30px;
+}
+
+@media only screen and (max-width: 1080px) {
+    .mybooking-section{
+        display: flex;
+        justify-content: center;
+    }
+    
+}
+
+@media only screen and (max-width: 768px) {
+
+    .container-md .sidebar{
+        display: none;
+    }
+
+
+
+    .order-booking-list{
+        height: 70vh !important;
+        margin-bottom: 100px;
+    }
+
+    .box-booking-pass{
+        width: 90% !important;
+    }
+
+}

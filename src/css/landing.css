@@ -15,7 +15,9 @@ html, body{
     display: none !important; /* for Chrome, Safari, and Opera */
 }
 
-
+.navbar-nav .dropdown-menu{
+    background-color: #F5F5F5;
+}
 
 a{
     text-decoration: none !important;
@@ -26,7 +28,7 @@ a{
     width: 100%;
     display: flex;
     justify-content: center;
-    height: 100vh;
+    height: 700px;
     padding-top: 150px;
 }
 
@@ -34,9 +36,10 @@ a{
     width: 100%;
     display: flex;
     justify-content: center;
-    height: 100vh;
-    padding-top: 200px;
+    height: 750px;
+    padding-top: 250px;
 }
+
 
 
 .nav-wrapper{
@@ -44,7 +47,7 @@ a{
     z-index: 9999;
     width: 100vw;
     height: 70px;
-    padding: 0 100px 0 100px;
+    padding: 0 20px 0 20px;
     background-color: #fff;
     box-shadow: 0px 2px 5px rgba(0,0,0,0.1);
     display: flex;
@@ -94,23 +97,13 @@ a{
     right: -50px;
 }
 
-.nav-wrapper ul{
-    padding: 0;
-    margin-bottom: 0;
-    max-width:max-content;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-}
 
 .nav-wrapper ul li{
     display: inline-block;
     margin-right: 75px;
 }
 
-.nav-wrapper ul li a:hover{
-    border-bottom: 2px solid #2395FF;
-}
+
 
 .navbar-nav li .btn-nav{
     position: absolute;
@@ -125,12 +118,6 @@ a{
     border-radius: 5px;
 }
 
-.navbar-nav li .btn-nav:hover{
-    background-color: #0484fb;
-
-    border: 2px solid #2395FF;
-}
-
 
 section{
     overflow-x: none;
@@ -140,7 +127,7 @@ section{
 
 
 .container-md .title{
-    font-size: 35px;
+    font-size: 40px;
     font-weight: 800;
     color: #000;
     margin-bottom: 30px;
@@ -398,9 +385,8 @@ section{
     width: 100%;
     justify-content: center;
     background-color: 100px;
-    margin-bottom: 10px;
     height: 200px;
-    overflow: auto
+    overflow-x: auto
 }
 
 .img-card-list .card-img{
@@ -451,7 +437,7 @@ footer .container-md{
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     height: 300px;
 }
 
@@ -526,13 +512,13 @@ footer .social-media .media{
     justify-content: space-between;
 }
 
+.section-top{
+    padding-top: 100px;
+}
+
+
 
 @media only screen and (max-width: 1080px) {
-
-    .container-md{
-        padding: 0 !important;
-        margin: 0 !important;
-    }
 
     .nav-wrapper ul li{
         display: inline-block;
@@ -545,7 +531,7 @@ footer .social-media .media{
     }
 
     .discover-section{
-        height: 100vh;
+        height: 600px;
         padding-top: 200px;
     }
 
@@ -562,12 +548,12 @@ footer .social-media .media{
     }
 
     .discover-section{
-        height: 90vh;
+        height: 600px;
         margin-bottom: 0px;
     }
     
     .box-search{
-        margin-top: 50px;
+        margin-top: 100px;
         position: absolute;
         top: 225px;
         z-index: 100;
@@ -592,7 +578,7 @@ footer .social-media .media{
 
     .overlay{
         position:absolute;
-        top: 625px;
+        top: 675px;
         right: 0;
         z-index: 5;
     }
@@ -661,7 +647,6 @@ footer .social-media .media{
         justify-content: space-around;
     }
 
-
     .section-top{
         padding-top: 200px;
     }
@@ -704,8 +689,7 @@ footer .social-media .media{
 
     .search img{
         position: relative;
-        top: 10px;
-        right: -25px;
+        right: -30px;
     }
 
     ul.navbar-nav li{
@@ -735,7 +719,7 @@ footer .social-media .media{
 
     .img-card-list{
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         margin-top: 25px;
         overflow: scroll;
         height: 100px;
@@ -756,7 +740,7 @@ footer .social-media .media{
 
     footer{
         padding: 20px;
-        margin-top: 250px;
+        margin-top: 100px;
         display: flex;
     }
 
@@ -801,12 +785,12 @@ footer .social-media .media{
     }
 
     .discover-section{
-        padding-top: 0px;
+        padding-top: 200px;
     }
 
-    .section-top{
-        padding-top: 0px;
-    }
+
+
+
 
 
   }
