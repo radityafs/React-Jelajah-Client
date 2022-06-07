@@ -1,19 +1,18 @@
 import React from 'react';
-import Bali from '../assets/card1.png';
-
 import { FaRegArrowAltCircleRight } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+
 export default function Card(props) {
-  const { url = '/explore/bali', picture, city } = props;
+  const { url = 'bali', picture, city, totalDestination = 0 } = props;
   return (
     <div className='card'>
-      <Link to={url}>
+      <Link to={`/explore/${url}`}>
         <img src={picture} alt='card' />
 
         <div className='card-act-total'>
           <div className='card-act'>
             <p>
-              <b>{Math.round(Math.random() * 100, 2)}</b> Destination
+              <b>{totalDestination}</b> Destination
             </p>
           </div>
         </div>

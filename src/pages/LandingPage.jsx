@@ -5,7 +5,6 @@ import HeroSection from '../components/LandingPage/HeroSection';
 import DiscoverSection from '../components/LandingPage/DiscoverSection';
 import TopDestinationSection from '../components/LandingPage/TopDestinationSection';
 import Footer from '../components/Footer';
-import { useSelector } from 'react-redux';
 //import aos
 import AOS from 'aos';
 

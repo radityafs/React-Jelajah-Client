@@ -1,20 +1,75 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/ExplorePage.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import BaliImage from '../assets/bali.jpg';
-import BaliHead from '../assets/BaliHead.png';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { FaStar } from 'react-icons/fa';
+import CardDestination from '../atoms/CardDestination';
+import { getDestination } from '../redux/actions/destination';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getActivityOfDestination,
+  getDetailDestination
+} from '../redux/actions/activity';
+
+import Card from '../atoms/Card';
 
 export default function ExplorePages() {
+  const dispatch = useDispatch();
+  const [activity, setActivity] = useState([]);
+  const [baliActivity, setBaliActivity] = useState([]);
+  const [yogyakartaActivity, yogyakartaSetActivity] = useState([]);
+
+  const destination = useSelector((state) => state.destination);
+
+  const getActivity = async () => {
+    await getActivityOfDestination('all', setActivity);
+    await getDetailDestination(2, yogyakartaSetActivity);
+    await getDetailDestination(1, setBaliActivity);
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    getActivity();
+    dispatch(getDestination());
+  }, []);
+
+  useEffect(() => {}, [activity]);
+
   return (
     <>
       <Header />
       <section className='container-md bannerTop'>
         <div className='topBanner'>
-          <img src={BaliHead} alt='Bali' />
+          <img
+            src='https://res.klook.com/image/upload/fl_lossy.progressive,q_85/c_fill,w_1920/Countries/tbpsjym4gieclgexfszv.webp'
+            alt='Bali'
+          />
+        </div>
+      </section>
+
+      <section className='container-md experiences'>
+        <h1 style={{ fontWeight: 600, fontSize: '24px', marginBottom: 0 }}>
+          Indonesia's must-visit cities
+        </h1>
+
+        <div className='card-list'>
+          {destination.isError ? (
+            <div>{destination.error}</div>
+          ) : destination.isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            destination.data.map((item) => (
+              <Card
+                key={item.destination_id}
+                url={item.destination_id}
+                picture={item.photo}
+                city={item.name}
+                totalDestination={item.totalActivity}
+              />
+            ))
+          )}
         </div>
       </section>
 
@@ -24,121 +79,49 @@ export default function ExplorePages() {
         </h1>
 
         <div className='popular-list'>
-          <div className='card-popular'>
-            <img src={BaliImage} alt='Bali' />
-            <div className='card-body'>
-              <h5 className='card-title'>Nusa Penida Day Tour from Bali </h5>
-              <p className='card-info'>
-                <div className='star'>
-                  <FaStar style={{ color: 'orange' }} />{' '}
-                  <span>4.8(3,568) • 40K+ booked</span>
-                </div>
-                <div className='feature-list'>
-                  <div className='box-feature'>Best Seller</div>
-                  <div className='box-feature'>Instant Confirmation</div>
-                </div>
-                <hr />
-                <div className='price'>
-                  <span>From </span>
+          {baliActivity.isError ? (
+            <div className='error'>{baliActivity.error}</div>
+          ) : baliActivity.isLoading ? (
+            <div className='loading'>Loading...</div>
+          ) : (
+            baliActivity?.data?.data?.data?.activityPopular?.map(
+              (item, index) => (
+                <CardDestination
+                  key={index}
+                  name={item.name}
+                  activity_id={item.activity_id}
+                  photo={item.Image}
+                  price={item.price}
+                />
+              )
+            )
+          )}
+        </div>
+      </section>
 
-                  <p>IDR </p>
-                  <p>1,000,000</p>
-                </div>
-              </p>
-            </div>
-          </div>
-          <div className='card-popular'>
-            <img src={BaliImage} alt='Bali' />
-            <div className='card-body'>
-              <h5 className='card-title'>Nusa Penida Day Tour from Bali </h5>
-              <p className='card-info'>
-                <div className='star'>
-                  <FaStar style={{ color: 'orange' }} />{' '}
-                  <span>4.8(3,568) • 40K+ booked</span>
-                </div>
-                <div className='feature-list'>
-                  <div className='box-feature'>Best Seller</div>
-                  <div className='box-feature'>Instant Confirmation</div>
-                </div>
-                <hr />
-                <div className='price'>
-                  <span>From </span>
+      <section className='container-md experiences'>
+        <h1 style={{ fontWeight: 600, fontSize: '24px' }}>
+          Popular activities in Yogyakarta
+        </h1>
 
-                  <p>IDR </p>
-                  <p>1,000,000</p>
-                </div>
-              </p>
-            </div>
-          </div>
-          <div className='card-popular'>
-            <img src={BaliImage} alt='Bali' />
-            <div className='card-body'>
-              <h5 className='card-title'>Nusa Penida Day Tour from Bali </h5>
-              <p className='card-info'>
-                <div className='star'>
-                  <FaStar style={{ color: 'orange' }} />{' '}
-                  <span>4.8(3,568) • 40K+ booked</span>
-                </div>
-                <div className='feature-list'>
-                  <div className='box-feature'>Best Seller</div>
-                  <div className='box-feature'>Instant Confirmation</div>
-                </div>
-                <hr />
-                <div className='price'>
-                  <span>From </span>
-
-                  <p>IDR </p>
-                  <p>1,000,000</p>
-                </div>
-              </p>
-            </div>
-          </div>
-          <div className='card-popular'>
-            <img src={BaliImage} alt='Bali' />
-            <div className='card-body'>
-              <h5 className='card-title'>Nusa Penida Day Tour from Bali </h5>
-              <p className='card-info'>
-                <div className='star'>
-                  <FaStar style={{ color: 'orange' }} />{' '}
-                  <span>4.8(3,568) • 40K+ booked</span>
-                </div>
-                <div className='feature-list'>
-                  <div className='box-feature'>Best Seller</div>
-                  <div className='box-feature'>Instant Confirmation</div>
-                </div>
-                <hr />
-                <div className='price'>
-                  <span>From </span>
-
-                  <p>IDR </p>
-                  <p>1,000,000</p>
-                </div>
-              </p>
-            </div>
-          </div>
-          <div className='card-popular'>
-            <img src={BaliImage} alt='Bali' />
-            <div className='card-body'>
-              <h5 className='card-title'>Nusa Penida Day Tour from Bali </h5>
-              <p className='card-info'>
-                <div className='star'>
-                  <FaStar style={{ color: 'orange' }} />{' '}
-                  <span>4.8(3,568) • 40K+ booked</span>
-                </div>
-                <div className='feature-list'>
-                  <div className='box-feature'>Best Seller</div>
-                  <div className='box-feature'>Instant Confirmation</div>
-                </div>
-                <hr />
-                <div className='price'>
-                  <span>From </span>
-
-                  <p>IDR </p>
-                  <p>1,000,000</p>
-                </div>
-              </p>
-            </div>
-          </div>
+        <div className='popular-list'>
+          {yogyakartaActivity.isError ? (
+            <div className='error'>{yogyakartaActivity.error}</div>
+          ) : yogyakartaActivity.isLoading ? (
+            <div className='loading'>Loading...</div>
+          ) : (
+            yogyakartaActivity?.data?.data?.data?.activityPopular?.map(
+              (item, index) => (
+                <CardDestination
+                  key={index}
+                  name={item.name}
+                  activity_id={item.activity_id}
+                  photo={item.Image}
+                  price={item.price}
+                />
+              )
+            )
+          )}
         </div>
       </section>
 
@@ -146,9 +129,9 @@ export default function ExplorePages() {
         <div className='top-container-experience'>
           <div className='info-experience-list'>
             <h1 style={{ fontWeight: 600, fontSize: '24px' }}>
-              Explore more activities in Bali
+              Explore more activities in Indonesia
             </h1>
-            <p>370 activities found</p>
+            <p>{activity.data?.data?.data?.length} activities found</p>
           </div>
           <div className='search-experience'>
             <input type='text' placeholder='Search Activity or Destination' />
@@ -165,318 +148,17 @@ export default function ExplorePages() {
 
         <div className='experiences-list-container'>
           <div className='row'>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>
-                    Nusa Penida Day Tour from Bali{' '}
-                  </h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />{' '}
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
+            {activity.data?.data?.data?.map((item, index) => (
+              <div className='col-md-6 col-lg-3 col-sm-6'>
+                <CardDestination
+                  key={index}
+                  name={item.name}
+                  activity_id={item.activity_id}
+                  photo={item.image}
+                  price={item.price}
+                />
               </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>
-                    Nusa Penida Day Tour from Bali{' '}
-                  </h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />{' '}
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>{' '}
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>
-                    Nusa Penida Day Tour from Bali{' '}
-                  </h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />{' '}
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div className='col-md-6 col-lg-3 col-sm-6'>
-              <div className='card-popular'>
-                <img src={BaliImage} alt='Bali' />
-                <div className='card-body'>
-                  <h5 className='card-title'>Nusa Penida Day Tour from Bali</h5>
-                  <p className='card-info'>
-                    <div className='star'>
-                      <FaStar style={{ color: 'orange' }} />
-                      <span>4.8(3,568) • 40K+ booked</span>
-                    </div>
-                    <div className='feature-list'>
-                      <div className='box-feature'>Best Seller</div>
-                      <div className='box-feature'>Instant Confirmation</div>
-                    </div>
-                    <hr />
-                    <div className='price'>
-                      <span>From </span>
-
-                      <p>IDR </p>
-                      <p>1,000,000</p>
-                    </div>
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className='pagination'>
-            <Stack spacing={2}>
-              <Pagination count={10} color='primary' />
-            </Stack>
+            ))}
           </div>
         </div>
       </section>
@@ -485,19 +167,24 @@ export default function ExplorePages() {
         <div className='container-md'>
           <div className='box-info-destination'>
             <div className='about-destination'>
-              <h4>Tentang Bali</h4>
-              <p>
-                Jika kamu mencari tempat yang tepat untuk melarikan diri dari
-                sibuknya kota, Bali adalah destinasi sempurna buat kamu. Pulau
-                ini begitu populer dan menaungi bermacam spot budaya, Pura Ulun
-                Danu Baratan adalah salah satunya. Habiskan hari di Subak
-                Tegalalang dan kagumi bukit-bukit hijau yang cantik. Tantang
-                diri kamu untuk mendaki Gunung Batur pada dini hari, lalu
-                hadiahi diri dengan panorama sunrise cantik saat tiba di puncak.
-                Jika kamu ingin kegiatan yang lebih menantang, ada beberapa
-                aktivitas air yang sayang untuk dilewatkan, sebut saja
-                flyboarding dan diving. Setelahnya saat senja beralih malam,
-                nikmati sisa hari dengan party di kawasan Seminyak.
+              <h4>Tentang Indonesia</h4>
+              <p style={{ fontSize: '14px' }}>
+                Keajaiban alam Indonesia sudah sepatutnya dijelajahi. Dengan
+                lebih dari 300 bahasa, 240 juta lebih populasi, dan 17.000
+                pulau, Indonesia tak lain adalah simbol keberagaman. Sebagian
+                besar wisatawan sudah pernah menjejakkan kakinya di
+                pantai-pantai Bali, padahal masih banyak permata tersembunyi di
+                negara ini, lho!
+              </p>
+
+              <p style={{ fontSize: '14px' }}>
+                Eksplor keindahan terumbu karang Raja Ampat, yang dikenal
+                sebagai salah satu spot menyelam terbaik di dunia, atau jelajahi
+                Gunung Bromo saat fajar dengan suguhan pemandangan sunrise
+                menakjubkan dari atas kawah. Destinasi lain yang wajib kamu
+                kunjungi adalah Candi Borobudur, candi Buddha terbesar di dunia,
+                kamu hanya perlu naik bus umum atau berkendara dengan mobil
+                pribadi untuk menuju ke sana. Mudah, kan?
               </p>
             </div>
 
@@ -529,10 +216,10 @@ export default function ExplorePages() {
                   <p style={{ fontWeight: 600 }}>
                     Waktu Terbaik Untuk Berkunjung
                   </p>
-                  <p>OCT</p>
-                  <p>Annual Ubud Wirters and Readers Festival</p>
-                  <p>APR - SEP</p>
-                  <p>Surfing dan Aktivitas Outdoor</p>
+                  <p>DEC</p>
+                  <p> Pemuteran Bay Festival & Denpasar Festival</p>
+                  <p>JUL - AUG</p>
+                  <p> Buleleng Festival & Sanur Village Festival</p>
                 </div>
               </div>
             </div>

@@ -1,10 +1,53 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import '../css/BookingPass.css';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import QRCode from '../assets/QRCode.png';
+import { useParams, useNavigate } from 'react-router-dom';
 
 export default function BookingPassPages() {
+  const [orderDetail, setOrderDetail] = useState([]);
+  const navigate = useNavigate();
+  const { id } = useParams();
+
+  const getOrderById = async (id) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_API_BACKEND_URL}/mybooking/${id}`,
+        {
+          headers: {
+            token: localStorage.getItem('token')
+          }
+        }
+      );
+
+      setOrderDetail(response.data);
+    } catch (error) {
+      if (error.response.status === 401) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'You are not logged in!'
+        });
+
+        navigate('/login');
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Something went wrong!'
+        });
+      }
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+
+    getOrderById(id);
+  }, []);
   return (
     <>
       <Header />
@@ -24,7 +67,7 @@ export default function BookingPassPages() {
                         marginTop: '30px'
                       }}
                     >
-                      Jelajah Dufan 2 Hari 3 Malam
+                      {orderDetail?.data?.data?.activity?.name}
                     </h2>
                   </div>
 
@@ -53,7 +96,7 @@ export default function BookingPassPages() {
                           height: '50px'
                         }}
                       >
-                        Raditya Firman Syaputra
+                        {orderDetail?.data?.data?.full_name}
                       </h5>
                       <p
                         style={{
@@ -71,7 +114,14 @@ export default function BookingPassPages() {
                           height: '50px'
                         }}
                       >
-                        27 April 2020
+                        {new Date(orderDetail?.data?.data?.date).toLocaleString(
+                          'en-US',
+                          {
+                            month: 'long',
+                            day: 'numeric',
+                            year: 'numeric'
+                          }
+                        )}
                       </h5>
                     </div>
                     <div className='col-6' style={{ paddingLeft: '10%' }}>
@@ -109,7 +159,7 @@ export default function BookingPassPages() {
                           height: '50px'
                         }}
                       >
-                        BK-20200429-1
+                        {orderDetail?.data?.data?.transaction_id}
                       </h5>
                     </div>
                   </div>

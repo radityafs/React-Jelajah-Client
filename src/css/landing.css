@@ -268,13 +268,14 @@ section{
     padding-top: -10px;
     display: flex;
     align-items: center;
-    height: 300px;
+    height: 325px;
     max-width: max-content;
     overflow-x: auto;
+    overflow-y: none;
 }
 
 .card{
-
+    border: 0;
     width:200px;
     height: 250px;
     margin-right: 250px;

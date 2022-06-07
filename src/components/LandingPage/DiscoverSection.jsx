@@ -1,13 +1,20 @@
 import React from 'react';
 import Card from '../../atoms/Card';
 import Bali from '../../assets/Bali.webp';
-import Lombok from '../../assets/Lombok.webp';
-import Sumba from '../../assets/SUMBA.webp';
-import Jakarta from '../../assets/Jakarta.webp';
-import Yogyakarta from '../../assets/Yogyakarta.webp';
-import LabuanBajo from '../../assets/LabuanBajo.webp';
+
+import { useEffect } from 'react';
+import { getDestination } from '../../redux/actions/destination';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function DiscoverSection() {
+  const dispatch = useDispatch();
+
+  const destination = useSelector((state) => state.destination);
+
+  useEffect(() => {
+    dispatch(getDestination());
+  }, []);
+
   return (
     <section className='discover-section'>
       <div className='container-md'>
@@ -16,9 +23,9 @@ export default function DiscoverSection() {
 
           <div className='text-more'>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam
-              euismod, nisi vel consectetur interdum, nisl nisi consectetur
-              nisi, eget consectetur nisi nisi vel nisi.
+              With over 17,000 islands spreading into three time zones,
+              Indonesia is the largest archipelago country in the world. Master
+              and explore the key regions in Indonesia.
             </p>
 
             <div className='more'>
@@ -28,12 +35,21 @@ export default function DiscoverSection() {
         </div>
 
         <div className='card-list'>
-          <Card picture={Bali} city={'Bali'} />
-          <Card picture={Lombok} city={'Lombok'} />
-          <Card picture={Sumba} city={'Sumba'} />
-          <Card picture={Jakarta} city={'Jakarta'} />
-          <Card picture={Yogyakarta} city={'Yogyakarta'} />
-          <Card picture={LabuanBajo} city={'Labuan Bajo'} />
+          {destination.isError ? (
+            <div>{destination.error}</div>
+          ) : destination.isLoading ? (
+            <div>Loading...</div>
+          ) : (
+            destination.data.map((item) => (
+              <Card
+                key={item.destination_id}
+                url={item.destination_id}
+                picture={item.photo}
+                city={item.name}
+                totalDestination={item.totalActivity}
+              />
+            ))
+          )}
         </div>
       </div>
     </section>

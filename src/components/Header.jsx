@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../assets/logo.svg';
 import Search from '../assets/search.svg';
 import Bali from '../assets/card1.png';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+
 export default function Header() {
   const [isLogged, SetisLogged] = useState(false);
   const [userProfile, SetuserProfile] = useState('');
+  const [searchHead, setSearchHead] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -17,7 +20,7 @@ export default function Header() {
 
       try {
         const data = JSON.parse(localStorage.getItem('data'));
-        if (data?.photo != undefined) {
+        if (data?.photo) {
           axios
             .get(
               `${process.env.REACT_APP_BACKEND_API_URL}/public/${data?.photo}`
@@ -42,12 +45,22 @@ export default function Header() {
     }
   }, []);
 
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      navigate(`/explore`, {
+        state: {
+          searchHead
+        }
+      });
+    }
+  };
   return (
     <>
       <nav className='navbar nav-wrapper navbar-expand-lg navbar-light bg-light bg-white py-40'>
         <div className='container-md'>
           <Link className='navbar-brand' to='/'>
-            <img src={Logo} alt='dssds' />
+            <img src={Logo} alt='Logo' />
           </Link>
           <button
             className='navbar-toggler'
@@ -65,7 +78,13 @@ export default function Header() {
               <li className='nav-item my-auto'>
                 <div className='search'>
                   <img src={Search} alt='search' />
-                  <input type='text' placeholder='Where you want to go?' />
+                  <input
+                    type='text'
+                    onChange={(e) => setSearchHead(e.target.value)}
+                    value={searchHead}
+                    onKeyDown={handleKeyDown}
+                    placeholder='Where you want to go?'
+                  />
                 </div>
               </li>
 
@@ -111,28 +130,20 @@ export default function Header() {
                       aria-labelledby='dropdownMenuLink'
                     >
                       <li>
-                        <a
+                        <Link
                           className='dropdown-item text-lg color-palette-2'
-                          href='#'
+                          to='/profile'
                         >
                           My Profile
-                        </a>
+                        </Link>
                       </li>
                       <li>
-                        <a
+                        <Link
                           className='dropdown-item text-lg color-palette-2'
-                          href='#'
+                          to='/mybooking'
                         >
-                          Wallet
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          className='dropdown-item text-lg color-palette-2'
-                          href='#'
-                        >
-                          Account Settings
-                        </a>
+                          My Booking
+                        </Link>
                       </li>
                       <li>
                         <a

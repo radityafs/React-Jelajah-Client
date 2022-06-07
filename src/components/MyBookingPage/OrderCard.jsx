@@ -1,13 +1,24 @@
-import React from 'react';
+import axios from 'axios';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-export default function OrderCard() {
+export default function OrderCard(props) {
+  const {
+    status = 0,
+    date = new Date().toUTCString(),
+    name = 'Disneyland - Ancol',
+    id = 1
+  } = props;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
-    <Link to={'/bookingPass'}>
+    <Link to={`/bookingpass/${id}`}>
       <div className='order-booking'>
         <div className='order-summary'>
-          <p>Senin, 20 Mei 2022</p>
-          <h2>Disneyland - Ancol</h2>
+          <p>{date}</p>
+          <h2>{name}</h2>
         </div>
 
         <hr />
@@ -16,7 +27,11 @@ export default function OrderCard() {
           <div className='status-box'>
             <p>Status</p>
 
-            <div className='status-order pending'>Waiting For Payment</div>
+            <div
+              className={`status-order ${status === 0 ? 'pending' : 'succeed'}`}
+            >
+              {status === 0 ? 'Waiting for payment' : 'Success'}
+            </div>
           </div>
         </div>
       </div>

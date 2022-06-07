@@ -15,7 +15,7 @@
     height: 400px;
     border-radius: 0 0 20px 20px;
     filter: brightness(0.8);
-    object-position: top center;
+    object-position: center;
 
 }
 
@@ -193,7 +193,7 @@
 
 @media only screen and (max-width: 1080px) {
     .info-destination .box-info-destination{
-        height: 850px;
+        height: 650px;
     }
 
 }

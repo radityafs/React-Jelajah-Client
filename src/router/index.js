@@ -4,11 +4,14 @@ import LandingPage from '../pages/LandingPage';
 import RegisterPage from '../pages/RegisterPage';
 import LoginPage from '../pages/LoginPage';
 import ForgotPages from '../pages/ForgotPages';
+import ExploreCityPages from '../pages/ExploreCityPages';
 import ExplorePages from '../pages/ExplorePages';
+
 import MyBookingPage from '../pages/MyBookingPage';
 import BookingPassPages from '../pages/BookingPassPages';
 import MyProfilePages from '../pages/MyProfilePages';
 import CheckoutPages from '../pages/CheckoutPages';
+import DestinationPages from '../pages/DestinationPages';
 
 function PrivateRoute({ children }) {
   const token = localStorage.getItem('token');
@@ -17,7 +20,7 @@ function PrivateRoute({ children }) {
     return children;
   }
 
-  return <Navigate to='/login' />;
+  return <Navigate to='/signup' />;
 }
 
 function PublicRoute({ children }) {
@@ -61,11 +64,44 @@ export default function router() {
           }
         />
 
-        <Route path='/profile' element={<MyProfilePages />} />
-        <Route path='/mybooking' element={<MyBookingPage />} />
-        <Route path='/bookingpass' element={<BookingPassPages />} />
-        <Route path='/explore/:destination' element={<ExplorePages />} />
-        <Route path='/checkout' element={<CheckoutPages />} />
+        <Route path='/explore' element={<ExplorePages />} />
+        <Route path='/explore/:destination_id' element={<ExploreCityPages />} />
+        <Route path='/activity/:activity_id' element={<DestinationPages />} />
+        <Route path='*' element={<LandingPage />} />
+
+        <Route
+          path='/profile'
+          element={
+            <PrivateRoute>
+              <MyProfilePages />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/mybooking/'
+          element={
+            <PrivateRoute>
+              <MyBookingPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/bookingpass/:id'
+          element={
+            <PrivateRoute>
+              <BookingPassPages />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path='/checkout'
+          element={
+            <PrivateRoute>
+              <CheckoutPages />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

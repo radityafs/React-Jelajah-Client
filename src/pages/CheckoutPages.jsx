@@ -1,14 +1,102 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import '../css/CheckoutPages.css';
 import { FcHighPriority } from 'react-icons/fc';
 import { FaCheckCircle } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 export default function CheckoutPages() {
-  useEffect(async () => {
-    document.title = 'Checkout';
+  const [data, setData] = useState({
+    activity_id: '',
+    full_name: '',
+    email: '',
+    phone: '',
+    quantity: 1,
+    total_price: 0,
+    status: 0,
+    insurance: 0
+  });
+
+  const [passenger, setPassenger] = useState({
+    full_name: '',
+    email: '',
+    phone: ''
+  });
+
+  const order = async () => {
+    if (data.full_name !== '' || data.email !== '' || data.phone !== '') {
+      const token = localStorage.getItem('token');
+
+      try {
+        const response = await axios.post('http://localhost:8080/order', data, {
+          headers: {
+            token: token
+          }
+        });
+        if (response.status === 200) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Success',
+            text: 'Your order has been placed'
+          });
+          navigate('/mybooking');
+        }
+      } catch (e) {
+        if (e.response.status === 401) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            confirmButtonColor: '#3085d6',
+            timer: 2000
+          });
+
+          localStorage.removeItem('token');
+          navigate('/login');
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Something went wrong!',
+            confirmButtonColor: '#3085d6',
+            timer: 2000
+          });
+        }
+      }
+    } else {
+      //swall fire error form empty
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: 'Please fill the form correctly!',
+        confirmButtonColor: '#3085d6',
+        timer: 2000
+      });
+    }
+  };
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log(location.state);
+    window.scrollTo(0, 0);
+
+    if (!location.state) {
+      navigate('/');
+    }
+
+    setData({
+      ...data,
+      activity_id: location.state.activity.activity_id,
+      total_price: location.state.activity.price * location.state.form.quantity,
+      quantity: location.state.form.quantity
+    });
   }, []);
+
   return (
     <>
       <Header />
@@ -76,6 +164,13 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        full_name: e.target.value
+                      });
+                    }}
+                    value={data?.full_name}
                   />
                   <label
                     htmlFor='full_name'
@@ -97,6 +192,13 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        email: e.target.value
+                      });
+                    }}
+                    value={data?.email}
                   />
                   <label
                     htmlFor='full_name'
@@ -118,6 +220,13 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setData({
+                        ...data,
+                        phone: e.target.value
+                      });
+                    }}
+                    value={data?.phone}
                   />
                   <div
                     className='box-danger'
@@ -185,7 +294,9 @@ export default function CheckoutPages() {
                       justifyContent: 'space-between'
                     }}
                   >
-                    <p style={{ marginBottom: 0 }}>Passenger : 1 Adult</p>
+                    <p style={{ marginBottom: 0 }}>
+                      Passenger : {location?.state?.form?.quantity} Person
+                    </p>
 
                     <div
                       className='toggle-same'
@@ -199,9 +310,18 @@ export default function CheckoutPages() {
                       <p style={{ marginBottom: 0, marginRight: '25px' }}>
                         Same as contact person
                       </p>
-                      <label class='switch'>
-                        <input type='checkbox' />
-                        <span class='slider round' />
+                      <label className='switch'>
+                        <input
+                          type='checkbox'
+                          checked={data?.checked}
+                          onChange={() => {
+                            setData({
+                              ...data,
+                              checked: !data.checked
+                            });
+                          }}
+                        />
+                        <span className='slider round' />
                       </label>
                     </div>
                   </div>
@@ -225,6 +345,15 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setPassenger({
+                        ...passenger,
+                        full_name: e.target.value
+                      });
+                    }}
+                    value={
+                      data?.checked ? data?.full_name : passenger?.full_name
+                    }
                   />
                   <label
                     htmlFor='full_name'
@@ -246,6 +375,13 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setPassenger({
+                        ...passenger,
+                        email: e.target.value
+                      });
+                    }}
+                    value={data?.checked ? data?.email : passenger?.email}
                   />
                   <label
                     htmlFor='full_name'
@@ -267,6 +403,13 @@ export default function CheckoutPages() {
                       marginBottom: '20px',
                       paddingLeft: '10px'
                     }}
+                    onChange={(e) => {
+                      setPassenger({
+                        ...passenger,
+                        phone: e.target.value
+                      });
+                    }}
+                    value={data?.checked ? data?.phone : passenger?.phone}
                   />
                 </div>
                 <p
@@ -316,6 +459,18 @@ export default function CheckoutPages() {
                           widht: '20px',
                           marginRight: '10px'
                         }}
+                        onChange={() => {
+                          const insurance_price = 1000 * data.quantity;
+
+                          setData({
+                            ...data,
+                            insurance: !data.insurance,
+                            total_price: data.insurance
+                              ? data.total_price - insurance_price
+                              : data.total_price + insurance_price
+                          });
+                        }}
+                        checked={data.insurance}
                       />
 
                       <h5 style={{ marginBottom: 0, fontSize: '18px' }}>
@@ -333,7 +488,7 @@ export default function CheckoutPages() {
                           color: '#2395FF'
                         }}
                       >
-                        Rp 10.000
+                        Rp 10.000 / pax
                       </p>
                     </div>
                   </div>
@@ -369,6 +524,9 @@ export default function CheckoutPages() {
                       fontWeight: '600',
                       color: '#FFF',
                       borderRadius: '10px'
+                    }}
+                    onClick={() => {
+                      order();
                     }}
                   >
                     Proceed to Payment
@@ -424,16 +582,24 @@ export default function CheckoutPages() {
                       marginBottom: '20px'
                     }}
                   >
-                    Sunrise Trekking di Gunung Batur
+                    {location?.state?.activity?.name}
                   </h2>
 
-                  <p style={{ marginBottom: '20px' }}>Denpasar, Bali</p>
-
-                  <p style={{ marginBottom: '40px' }}>
-                    Sunday, 15 August 2020. 12:33 - 15:21
+                  <p style={{ marginBottom: '30px' }}>
+                    {location?.state?.form?.date?.toLocaleDateString('en-US', {
+                      weekday: 'long',
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
                   </p>
 
-                  <div className='include-list'>
+                  <div
+                    className='include-list'
+                    style={{
+                      marginBottom: '50px'
+                    }}
+                  >
                     <div
                       className='list-include'
                       style={{
@@ -467,7 +633,7 @@ export default function CheckoutPages() {
                       </p>
                     </div>
                   </div>
-                  <hr style={{ marginTop: '50px' }} />
+                  <hr />
 
                   <div
                     className='price-order'
@@ -480,7 +646,7 @@ export default function CheckoutPages() {
                   >
                     <h5>Total Payment</h5>
 
-                    <h5>Rp. 10.000.000</h5>
+                    <h5>Rp. {data.total_price.toLocaleString()}</h5>
                   </div>
                 </div>
               </div>
